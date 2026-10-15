@@ -1,0 +1,306 @@
+<nav class="navbar navbar-expand-lg blogify-navbar">
+    <div class="container">
+
+        <!-- Brand -->
+        <a class="navbar-brand blogify-brand" href="/">
+            <span class="blogify-logo">
+                <i class="bi bi-book-half"></i>
+            </span>
+
+            <span class="blogify-brand-text">
+                Blogify.
+                <small>YOUR WORLD OF STORIES</small>
+            </span>
+        </a>
+
+        <!-- Mobile menu -->
+        <button
+            class="navbar-toggler blogify-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation links -->
+        <div class="collapse navbar-collapse"
+             id="navbarNavDropdown">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+
+                <li class="nav-item">
+                    <a class="nav-link blogify-link"
+                       href="/">
+                        Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link blogify-link"
+                       href="/blog/add-new">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Add Blog
+                    </a>
+                </li>
+
+                <% if (locals.user) { %>
+
+                    <!-- Logged-in user -->
+                    <li class="nav-item dropdown">
+                        <a
+                            class="nav-link blogify-link dropdown-toggle"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <i class="bi bi-person-circle me-1"></i>
+                            <%= user.fullName %>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end blogify-dropdown">
+                            <li>
+                                <span class="dropdown-header">
+                                    YOUR ACCOUNT
+                                </span>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="/user/logout">
+                                    <i class="bi bi-box-arrow-right me-2"></i>
+                                    Log Out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                <% } else { %>
+
+                    <!-- Guest links -->
+                    <li class="nav-item">
+                        <a class="nav-link blogify-link"
+                           href="/user/signin">
+                            Log In
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a class="nav-link blogify-signup"
+                           href="/user/signup">
+                            Sign Up for Free
+                            <i class="bi bi-arrow-up-right ms-1"></i>
+                        </a>
+                    </li>
+
+                <% } %>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Error message -->
+<% if (locals.error) { %>
+    <div class="container mt-3">
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert">
+            <%= locals.error %>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+            ></button>
+        </div>
+    </div>
+<% } %>
+
+<style>
+    :root {
+        --blogify-navy: #18263D;
+        --blogify-navy-light: #263954;
+        --blogify-gold: #C5A46D;
+        --blogify-gold-light: #E4D0A8;
+        --blogify-ivory: #F8F6F1;
+    }
+
+    /* Navbar */
+    .blogify-navbar {
+        background: var(--blogify-navy);
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(197, 164, 109, .4);
+        box-shadow: 0 5px 22px rgba(10, 20, 35, .12);
+        position: relative;
+        z-index: 1000;
+    }
+
+    /* Brand */
+    .blogify-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        color: var(--blogify-ivory) !important;
+    }
+
+    .blogify-logo {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(197, 164, 109, .5);
+        border-radius: 9px;
+        color: var(--blogify-gold-light);
+        font-size: 22px;
+        transition: all .3s ease;
+    }
+
+    .blogify-brand:hover .blogify-logo {
+        background: var(--blogify-gold);
+        color: var(--blogify-navy);
+        transform: translateY(-2px);
+    }
+
+    .blogify-brand-text {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -.4px;
+    }
+
+    .blogify-brand-text small {
+        display: block;
+        margin-top: 5px;
+        font-family: "Segoe UI", sans-serif;
+        font-size: 8px;
+        font-weight: 500;
+        letter-spacing: 1.8px;
+        color: var(--blogify-gold);
+    }
+
+    /* Navigation links */
+    .blogify-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 11px 14px !important;
+        border-radius: 6px;
+        color: #E2E5EB !important;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all .25s ease;
+    }
+
+    .blogify-link:hover,
+    .blogify-link:focus {
+        color: var(--blogify-gold-light) !important;
+        background: rgba(255, 255, 255, .06);
+    }
+
+    /* Signup CTA */
+    .blogify-signup {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 17px !important;
+        border: 1px solid var(--blogify-gold);
+        border-radius: 6px;
+        background: var(--blogify-gold);
+        color: var(--blogify-navy) !important;
+        font-size: 13px;
+        font-weight: 700;
+        transition: all .3s ease;
+    }
+
+    .blogify-signup:hover {
+        background: var(--blogify-gold-light);
+        border-color: var(--blogify-gold-light);
+        color: var(--blogify-navy) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 16px rgba(197, 164, 109, .2);
+    }
+
+    /* Dropdown */
+    .blogify-dropdown {
+        min-width: 200px;
+        margin-top: 12px !important;
+        padding: 9px;
+        border: 1px solid #E8E0D3;
+        border-radius: 9px;
+        background: #FFFFFF;
+        box-shadow: 0 12px 30px rgba(10, 20, 35, .14);
+    }
+
+    .blogify-dropdown .dropdown-header {
+        color: #A17B43;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+
+    .blogify-dropdown .dropdown-item {
+        padding: 10px 12px;
+        border-radius: 5px;
+        color: var(--blogify-navy);
+        font-size: 13px;
+    }
+
+    .blogify-dropdown .dropdown-item:hover {
+        background: #F5F0E6;
+        color: #94713D;
+    }
+
+    /* Mobile toggle */
+    .blogify-toggler {
+        padding: 7px 10px;
+        border: 1px solid rgba(197, 164, 109, .55);
+        box-shadow: none !important;
+    }
+
+    .blogify-toggler:focus {
+        box-shadow: 0 0 0 3px rgba(197, 164, 109, .2) !important;
+    }
+
+    .blogify-toggler .navbar-toggler-icon {
+        filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: 991.98px) {
+        .blogify-navbar .navbar-collapse {
+            padding-top: 16px;
+            margin-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .blogify-navbar .navbar-nav {
+            align-items: stretch !important;
+        }
+
+        .blogify-link {
+            width: 100%;
+            padding: 12px !important;
+        }
+
+        .blogify-signup {
+            width: fit-content;
+            margin-bottom: 5px;
+        }
+
+        .blogify-dropdown {
+            margin-top: 4px !important;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .blogify-logo,
+        .blogify-link,
+        .blogify-signup {
+            transition: none;
+        }
+    }
+</style>

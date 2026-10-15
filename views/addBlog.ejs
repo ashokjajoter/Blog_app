@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title>Create a Story | Blog App</title>
+
+    <style>
+        :root {
+            --navy: #18263D;
+            --navy-light: #263954;
+            --gold: #C5A46D;
+            --gold-light: #E4D0A8;
+            --ivory: #F8F6F1;
+            --white: #FFFFFF;
+            --muted: #777C85;
+            --border: #E8E0D3;
+        }
+
+        body {
+            background: var(--ivory);
+            color: var(--navy);
+            font-family: "Segoe UI", sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Page background */
+        .create-wrapper {
+            padding: 55px 16px 80px;
+            background:
+                radial-gradient(
+                    circle at 90% 5%,
+                    rgba(197, 164, 109, .13),
+                    transparent 30%
+                ),
+                linear-gradient(135deg, #F8F6F1, #F0E9DC);
+        }
+
+        .create-container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* Page heading */
+        .page-kicker {
+            color: #A17B43;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .page-title {
+            color: var(--navy);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(34px, 5vw, 48px);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 14px;
+        }
+
+        .page-description {
+            max-width: 560px;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.9;
+            margin-bottom: 35px;
+        }
+
+        /* Form card */
+        .editor-card {
+            padding: 38px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 18px 50px rgba(24, 38, 61, .07);
+            animation: enter .5s ease both;
+        }
+
+        @keyframes enter {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .editor-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 22px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid #EEE8DE;
+        }
+
+        .editor-icon {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F5F0E6;
+            color: #A17B43;
+            border-radius: 9px;
+            font-size: 20px;
+        }
+
+        .editor-heading h2 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 23px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .editor-heading p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* Labels and fields */
+        .form-label {
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            min-height: 49px;
+            padding: 13px 15px;
+            border: 1px solid #DEDCD6;
+            border-radius: 7px;
+            background: #FDFCF9;
+            color: var(--navy);
+            font-size: 14px;
+            transition: border-color .25s ease,
+                        box-shadow .25s ease,
+                        background .25s ease;
+        }
+
+        .form-control::placeholder {
+            color: #A3A4A7;
+        }
+
+        .form-control:focus {
+            background: var(--white);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(197, 164, 109, .14);
+            outline: none;
+        }
+
+        /* Image upload */
+        .upload-area {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 32px 20px;
+            border: 1px dashed #C5A46D;
+            border-radius: 10px;
+            background: #FCFAF6;
+            text-align: center;
+            transition: background .25s ease,
+                        border-color .25s ease;
+        }
+
+        .upload-area:hover {
+            background: #F7F1E5;
+            border-color: #A17B43;
+        }
+
+        .upload-icon {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F1E7D4;
+            border-radius: 50%;
+            color: #A17B43;
+            font-size: 24px;
+        }
+
+        .upload-title {
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .upload-hint {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .upload-area .form-control {
+            width: 100%;
+            max-width: 370px;
+            font-size: 12px;
+        }
+
+        /* Writing area */
+        .body-textarea {
+            min-height: 230px;
+            resize: vertical;
+            line-height: 1.9;
+        }
+
+        /* Publish button */
+        .publish-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 50px;
+            padding: 13px 25px;
+            border: 1px solid var(--navy);
+            border-radius: 7px;
+            background: var(--navy);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 600;
+            transition: all .3s ease;
+        }
+
+        .publish-btn:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--navy);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 164, 109, .2);
+        }
+
+        .form-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding-top: 25px;
+            margin-top: 12px;
+            border-top: 1px solid #EEE8DE;
+        }
+
+        .form-note {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 576px) {
+            .create-wrapper {
+                padding: 35px 12px 55px;
+            }
+
+            .editor-card {
+                padding: 24px 19px;
+                border-radius: 12px;
+            }
+
+            .page-title {
+                font-size: 35px;
+            }
+
+            .publish-btn {
+                width: 100%;
+            }
+
+            .form-footer {
+                align-items: stretch;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .editor-card {
+                animation: none;
+            }
+
+            .form-control,
+            .upload-area,
+            .publish-btn {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("./partials/nav") %>
+
+    <main class="create-wrapper">
+        <div class="create-container">
+
+            <!-- Page introduction -->
+            <div class="page-kicker">
+                Your Creative Space
+            </div>
+
+            <h1 class="page-title">
+                Create a new story.
+            </h1>
+
+            <p class="page-description">
+                Every great story begins with an idea.
+                Bring your thoughts to life and share something
+                meaningful with the Blog App community.
+            </p>
+
+            <!-- Blog editor -->
+            <section class="editor-card">
+
+                <div class="editor-heading">
+                    <div class="editor-icon">
+                        <i class="bi bi-journal-richtext"></i>
+                    </div>
+
+                    <div>
+                        <h2>Blog Details</h2>
+                        <p>Give your story a title, image, and voice.</p>
+                    </div>
+                </div>
+
+                <form
+                    action="/blog"
+                    method="post"
+                    enctype="multipart/form-data"
+                >
+
+                    <!-- Cover image -->
+                    <div class="mb-4">
+                        <label for="coverImage" class="form-label">
+                            Cover Image
+                        </label>
+
+                        <div class="upload-area">
+                            <div class="upload-icon">
+                                <i class="bi bi-image"></i>
+                            </div>
+
+                            <p class="upload-title">
+                                Choose a cover image
+                            </p>
+
+                            <p class="upload-hint">
+                                Select a photo that captures your story.
+                            </p>
+
+                            <input
+                                type="file"
+                                class="form-control"
+                                id="coverImage"
+                                name="coverImage"
+                                accept="image/*"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="mb-4">
+                        <label for="title" class="form-label">
+                            Blog Title
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="title"
+                            name="title"
+                            placeholder="Enter an engaging title..."
+                            required
+                        >
+                    </div>
+
+                    <!-- Body -->
+                    <div class="mb-4">
+                        <label for="body" class="form-label">
+                            Your Story
+                        </label>
+
+                        <textarea
+                            name="body"
+                            class="form-control body-textarea"
+                            id="body"
+                            placeholder="Start writing your story here..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="form-footer">
+                        <p class="form-note">
+                            <i class="bi bi-stars me-1"></i>
+                            Great stories start with great ideas.
+                        </p>
+
+                        <button
+                            type="submit"
+                            class="publish-btn"
+                        >
+                            Publish Your Story
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <%- include("./partials/script") %>
+</body>
+</html>

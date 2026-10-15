@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title><%= blog.title %> | Blog App</title>
+
+    <style>
+        :root {
+            --navy: #18263D;
+            --navy-light: #263954;
+            --gold: #C5A46D;
+            --gold-light: #E4D0A8;
+            --ivory: #F8F6F1;
+            --white: #FFFFFF;
+            --muted: #777C85;
+            --border: #E8E0D3;
+        }
+
+        body {
+            background: var(--ivory);
+            color: var(--navy);
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        /* Page background */
+        .article-page {
+            min-height: 100vh;
+            padding: 50px 15px 80px;
+            background:
+                radial-gradient(
+                    circle at 90% 5%,
+                    rgba(197, 164, 109, .10),
+                    transparent 28%
+                ),
+                var(--ivory);
+        }
+
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Article header */
+        .article-kicker {
+            color: #A17B43;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .article-title {
+            color: var(--navy);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(34px, 5vw, 54px);
+            font-weight: 700;
+            letter-spacing: -1.3px;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+            margin-bottom: 25px;
+        }
+
+        /* Author information */
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+
+        .author-placeholder {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #E8DFCE;
+            color: var(--navy);
+            font-size: 20px;
+        }
+
+        .author-name {
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .author-caption {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* Cover image */
+        .article-cover {
+            width: 100%;
+            max-height: 490px;
+            object-fit: cover;
+            display: block;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            box-shadow: 0 16px 40px rgba(24, 38, 61, .10);
+            margin-bottom: 35px;
+        }
+
+        /* Article body */
+        .article-body {
+            color: #424954;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 18px;
+            line-height: 2;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+            word-break: normal;
+        }
+
+        .article-divider {
+            height: 1px;
+            border: 0;
+            background: #E3DACC;
+            margin: 42px 0;
+        }
+
+        /* Comments */
+        .comments-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 32px;
+            box-shadow: 0 10px 35px rgba(24, 38, 61, .04);
+        }
+
+        .comments-title {
+            color: var(--navy);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 29px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .comments-subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 26px;
+        }
+
+        .comment-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 30px;
+            height: 30px;
+            margin-left: 6px;
+            padding: 0 8px;
+            background: #F1E7D4;
+            color: #8F6B35;
+            border-radius: 20px;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .comment-input {
+            min-height: 105px;
+            resize: vertical;
+            padding: 15px;
+            border: 1px solid #DEDCD6;
+            border-radius: 8px;
+            background: #FDFCF9;
+            color: var(--navy);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .comment-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(197, 164, 109, .14);
+        }
+
+        .premium-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--navy);
+            color: white;
+            border: 1px solid var(--navy);
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all .25s ease;
+        }
+
+        .premium-btn:hover {
+            background: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .signin-notice {
+            padding: 17px;
+            background: #F8F4EC;
+            border: 1px solid #E8DCC5;
+            border-radius: 8px;
+            color: #625640;
+            font-size: 14px;
+        }
+
+        .signin-notice a {
+            color: #936C32;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .signin-notice a:hover {
+            text-decoration: underline;
+        }
+
+        /* Individual comments */
+        .comment-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 20px 0;
+            border-top: 1px solid #EEE8DE;
+        }
+
+        .comment-avatar {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+        }
+
+        .comment-placeholder {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #F1E7D4;
+            color: #8F6B35;
+            font-size: 17px;
+        }
+
+        .comment-author {
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .comment-content {
+            margin: 0;
+            color: #555D68;
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .empty-comments {
+            padding: 25px 15px;
+            background: #FCFAF6;
+            border: 1px dashed #DED3C0;
+            border-radius: 8px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 576px) {
+            .article-page {
+                padding: 35px 12px 55px;
+            }
+
+            .article-title {
+                font-size: 35px;
+            }
+
+            .article-body {
+                font-size: 16px;
+                line-height: 1.9;
+            }
+
+            .comments-card {
+                padding: 23px 18px;
+            }
+
+            .comments-title {
+                font-size: 25px;
+            }
+
+            .article-cover {
+                border-radius: 9px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .premium-btn {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('./partials/nav') %>
+
+    <main class="article-page">
+        <div class="article-container">
+
+            <!-- Article -->
+            <article>
+
+                <div class="article-kicker">
+                    <i class="bi bi-bookmark-star me-1"></i>
+                    The Blog App Journal
+                </div>
+
+                <h1 class="article-title">
+                    <%= blog.title %>
+                </h1>
+
+                <!-- Author -->
+                <div class="author-info">
+                    <% if (blog.createdBy &&
+                           blog.createdBy.profileImageURL) { %>
+
+                        <img
+                            src="<%= blog.createdBy.profileImageURL %>"
+                            alt="Author profile"
+                            class="author-avatar"
+                        >
+
+                    <% } else { %>
+
+                        <div class="author-placeholder">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                    <% } %>
+
+                    <div>
+                        <div class="author-name">
+                            <%= blog.createdBy
+                                ? blog.createdBy.fullName
+                                : 'Anonymous' %>
+                        </div>
+
+                        <div class="author-caption">
+                            Author · A story worth sharing
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cover image -->
+                <% if (blog.coverImageURL) { %>
+                    <img
+                        src="<%= blog.coverImageURL %>"
+                        alt="<%= blog.title %>"
+                        class="article-cover"
+                    >
+                <% } %>
+
+                <!-- Article content -->
+                <div class="article-body"><%= blog.body %></div>
+
+            </article>
+
+            <hr class="article-divider">
+
+            <!-- Comments -->
+            <section class="comments-card">
+
+                <h2 class="comments-title">
+                    Join the conversation
+
+                    <span class="comment-count">
+                        <%= comments ? comments.length : 0 %>
+                    </span>
+                </h2>
+
+                <p class="comments-subtitle">
+                    Good stories get even better when we share our thoughts.
+                </p>
+
+                <!-- Comment form -->
+                <% if (locals.user) { %>
+
+                    <form
+                        action="/blog/comment/<%= blog._id %>"
+                        method="POST"
+                        class="mb-4"
+                    >
+                        <div class="mb-3">
+                            <label for="content" class="form-label">
+                                Your comment
+                            </label>
+
+                            <textarea
+                                id="content"
+                                name="content"
+                                class="form-control comment-input"
+                                placeholder="What are your thoughts on this story?"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="premium-btn">
+                            Post Comment
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </form>
+
+                <% } else { %>
+
+                    <div class="signin-notice mb-4">
+                        <i class="bi bi-chat-left-text me-2"></i>
+                        Want to join the conversation?
+                        <a href="/user/signin">Sign in</a>
+                        to leave a comment.
+                    </div>
+
+                <% } %>
+
+                <!-- Comment list -->
+                <div class="comments-list">
+
+                    <% if (comments && comments.length > 0) { %>
+
+                        <% comments.forEach(function(comment) { %>
+
+                            <div class="comment-item">
+
+                                <% if (comment.createdBy &&
+                                       comment.createdBy.profileImageURL) { %>
+
+                                    <img
+                                        src="<%= comment.createdBy.profileImageURL %>"
+                                        alt="Comment author"
+                                        class="comment-avatar"
+                                    >
+
+                                <% } else { %>
+
+                                    <div class="comment-placeholder">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+
+                                <% } %>
+
+                                <div class="flex-grow-1">
+                                    <div class="comment-author">
+                                        <%= comment.createdBy
+                                            ? comment.createdBy.fullName
+                                            : "User" %>
+                                    </div>
+
+                                    <p class="comment-content"><%= comment.content %></p>
+                                </div>
+
+                            </div>
+
+                        <% }); %>
+
+                    <% } else { %>
+
+                        <div class="empty-comments">
+                            <i class="bi bi-chat-square-text fs-4 d-block mb-2"></i>
+                            No comments yet. Be the first to share your thoughts.
+                        </div>
+
+                    <% } %>
+
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <%- include('./partials/script') %>
+</body>
+</html>

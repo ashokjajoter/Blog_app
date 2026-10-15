@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<head>
+    <%- include("./partials/head") %>
+    <title>Sign In | Blog App</title>
+
+    <style>
+        :root {
+            --navy: #18263D;
+            --navy-light: #263954;
+            --gold: #C5A46D;
+            --gold-light: #E4D0A8;
+            --ivory: #F8F6F1;
+            --white: #FFFFFF;
+            --muted: #777C85;
+            --border: #E8E0D3;
+        }
+
+        body {
+            background: var(--ivory);
+            color: var(--navy);
+            font-family: "Segoe UI", sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Main layout */
+        .signin-wrapper {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 16px;
+
+            background:
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(197, 164, 109, .14),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    135deg,
+                    #F8F6F1 0%,
+                    #F0E9DC 100%
+                );
+        }
+
+        /* Login card */
+        .signin-card {
+            width: 100%;
+            max-width: 450px;
+            padding: 42px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(24, 38, 61, .09);
+            animation: cardEnter .6s ease both;
+        }
+
+        @keyframes cardEnter {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Brand */
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+            margin-bottom: 38px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--navy);
+            color: var(--gold-light);
+            border-radius: 10px;
+            font-size: 23px;
+        }
+
+        .brand-name {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--navy);
+        }
+
+        .brand-tagline {
+            margin-top: 4px;
+            color: #8D7959;
+            font-size: 9px;
+            letter-spacing: 2px;
+        }
+
+        /* Heading */
+        .signin-heading {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-align: center;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .signin-description {
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        /* Form fields */
+        .form-label {
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 9px;
+        }
+
+        .form-control {
+            min-height: 50px;
+            padding: 12px 15px;
+            border: 1px solid #DEDCD6;
+            border-radius: 7px;
+            background: #FDFCF9;
+            color: var(--navy);
+            font-size: 14px;
+            transition: all .25s ease;
+        }
+
+        .form-control::placeholder {
+            color: #A3A4A7;
+        }
+
+        .form-control:focus {
+            background: var(--white);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(197, 164, 109, .15);
+            outline: none;
+        }
+
+        /* Submit button */
+        .signin-btn {
+            width: 100%;
+            min-height: 50px;
+            margin-top: 8px;
+            background: var(--navy);
+            color: var(--white);
+            border: 1px solid var(--navy);
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .3px;
+            transition: all .3s ease;
+        }
+
+        .signin-btn:hover {
+            background: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 164, 109, .22);
+        }
+
+        /* Signup link */
+        .signup-text {
+            text-align: center;
+            margin: 26px 0 0;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .signup-link {
+            color: #A17B43;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color .2s ease;
+        }
+
+        .signup-link:hover {
+            color: var(--navy);
+            text-decoration: underline;
+        }
+
+        .signin-footer {
+            margin-top: 28px;
+            text-align: center;
+            color: #89847B;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 576px) {
+            .signin-wrapper {
+                padding: 30px 15px;
+            }
+
+            .signin-card {
+                padding: 30px 22px;
+                border-radius: 12px;
+            }
+
+            .signin-heading {
+                font-size: 31px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .signin-card {
+                animation: none;
+            }
+
+            .form-control,
+            .signin-btn {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("./partials/nav") %>
+
+    <main class="signin-wrapper">
+        <div class="signin-card">
+
+            <!-- Brand -->
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="bi bi-book-half"></i>
+                </div>
+
+                <div>
+                    <div class="brand-name">Blog App.</div>
+                    <div class="brand-tagline">
+                        THE ART OF STORYTELLING
+                    </div>
+                </div>
+            </div>
+
+            <!-- Heading -->
+            <h1 class="signin-heading">
+                Welcome back.
+            </h1>
+
+            <p class="signin-description">
+                Sign in to discover stories, share your ideas,
+                and continue your storytelling journey.
+            </p>
+
+            <!-- Signin form -->
+            <form action="/user/signin" method="post">
+
+                <div class="mb-4">
+                    <label for="email" class="form-label">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        class="form-control"
+                        name="email"
+                        id="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        class="form-control"
+                        name="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="signin-btn">
+                    Sign In &rarr;
+                </button>
+
+            </form>
+
+            <p class="signup-text">
+                New to Blog App?
+                <a href="/user/signup" class="signup-link">
+                    Create an account
+                </a>
+            </p>
+
+            <div class="signin-footer">
+                YOUR STORIES. YOUR SPACE. YOUR COMMUNITY.
+            </div>
+
+        </div>
+    </main>
+
+    <%- include("./partials/script") %>
+</body>
+</html>
